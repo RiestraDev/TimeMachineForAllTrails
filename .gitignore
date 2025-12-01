@@ -1,0 +1,33 @@
+# --- OS Files (Windows & Mac) ---
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# --- Node / Javascript ---
+node_modules/
+package-lock.json
+# ^ Keep package-lock.json if you want to lock versions, 
+# but ignore it if you prefer fresh installs on other machines.
+npm-debug.log
+yarn-error.log
+
+# --- Build / Dist Folders ---
+# If you are using Webpack, Vite, or a bundler
+dist/
+build/
+
+# --- Environment & Secrets ---
+.env
+.env.local
+.env.production
+
+# --- Editor Config ---
+.vscode/
+.idea/
+*.swp
+
+# --- Chrome Extension Specific ---
+# Private keys for packaging (NEVER commit these)
+*.pem
+# Packed extension files
+*.crx
