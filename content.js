@@ -1,11 +1,8 @@
-// Global State
-let allPhotosCache = [];
-let currentSort = 'desc';
-let currentMonth = 0; 
-let isRunning = false;
+// --- CONFIGURATION ---
+const API_KEY = '3p0t5s6b5g4g0e8k3c1j3w7y5c3m4t8i'; 
+const AFFILIATE_LINK = "https://www.amazon.com/Katadyn-Membrane-Endurance-Camping-Backpacking/dp/B075X5R67T/?tag=riestradev-20"; 
 
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const API_KEY = '3p0t5s6b5g4g0e8k3c1j3w7y5c3m4t8i'; 
 
 // Whimsical messages
 const LOADING_MESSAGES = [
@@ -14,8 +11,14 @@ const LOADING_MESSAGES = [
     "🧊 Staying frosty to avoid the ban hammer...",
     "🤖 acting_totally_human.exe...",
     "⏳ This is as fast as we can go without angering the server gods...",
-    "🚙 shifting_into_4lo.exe..." // Added a 4Runner easter egg for you
+    "🚙 shifting_into_4lo.exe..." 
 ];
+
+// --- STATE ---
+let allPhotosCache = [];
+let currentSort = 'desc';
+let currentMonth = 0; 
+let isRunning = false;
 
 // --- LISTENERS ---
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -49,35 +52,50 @@ async function getApiKey() {
 }
 
 async function getTrailId() {
-    // Strategy 1: React Props
+    console.log("🔍 Scanning for Trail ID...");
+
+    // Strategy 1: React Props (Targeting the container div)
     try {
         const reactContainer = document.querySelector('div[data-react-class="PhotoPage"]');
         if (reactContainer) {
             const rawProps = reactContainer.getAttribute('data-react-props');
             if (rawProps) {
                 const props = JSON.parse(rawProps);
-                if (props?.context?.locationServerData?.loc_id) return props.context.locationServerData.loc_id;
+                // Path: context -> locationServerData -> loc_id
+                if (props?.context?.locationServerData?.loc_id) {
+                    const id = props.context.locationServerData.loc_id;
+                    console.log("✅ Found ID via React Props:", id);
+                    return id;
+                }
             }
         }
-    } catch (e) {}
+    } catch (e) { 
+        console.warn("React Props strategy failed", e); 
+    }
 
-    // Strategy 2: Meta Tags
+    // Strategy 2: Local Meta Tags (Mobile App Links)
     try {
         const meta = document.querySelector('meta[property="al:ios:url"]') || document.querySelector('meta[property="al:android:url"]');
         if (meta) {
             const match = meta.getAttribute('content').match(/trail\/(\d+)/);
-            if (match && match[1]) return match[1];
+            if (match && match[1]) {
+                console.log("✅ Found ID via Meta Tag:", match[1]);
+                return match[1];
+            }
         }
     } catch(e) {}
 
-    // Strategy 3: Next.js Data
+    // Strategy 3: Next.js Data (__NEXT_DATA__ script tag)
     try {
         const scriptTag = document.getElementById('__NEXT_DATA__');
         if (scriptTag) {
             const nextData = JSON.parse(scriptTag.innerText);
             const id = nextData?.props?.pageProps?.trail?.id 
                     || nextData?.props?.pageProps?.dehydratedState?.queries?.[0]?.state?.data?.id;
-            if (id) return id;
+            if (id) {
+                console.log("✅ Found ID via Next.js:", id);
+                return id;
+            }
         }
     } catch(e) {}
 
@@ -86,6 +104,7 @@ async function getTrailId() {
         const pageSource = document.documentElement.innerHTML;
         const locMatch = pageSource.match(/"loc_id":\s*(\d+)/);
         if (locMatch && locMatch[1]) return locMatch[1];
+        
         const apiMatch = pageSource.match(/\/api\/alltrails\/v2\/trails\/(\d+)/);
         if (apiMatch && apiMatch[1]) return apiMatch[1];
     } catch (e) {}
@@ -103,9 +122,65 @@ function buildProxyUrl(id, hash, size) {
     return `https://images.alltrails.com/${btoa(JSON.stringify(req))}`;
 }
 
+// --- MONETIZATION COMPONENT ---
+function renderAffiliateAd(container) {
+    const monthName = MONTHS[currentMonth];
+    
+    // Copy for Katadyn Water Filter
+    let adTitle = "Stay Hydrated on the Trail";
+    let adBody = "Don't risk bad water. The Katadyn BeFree is the gold standard for filtering.";
+    let buttonText = "Check Price";
+
+    // Optional seasonal logic
+    if ([5, 6, 7, 8].includes(currentMonth)) { // Summer months
+        adTitle = `Hiking in ${monthName}? It gets hot.`;
+        adBody = "Carry enough water and filter from sources safely.";
+    }
+
+    const adHTML = `
+        <div style="
+            margin: 20px 0; 
+            padding: 16px; 
+            background: #f8f9fa; 
+            border: 1px solid #e9ecef; 
+            border-left: 4px solid #4183c4; 
+            border-radius: 6px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+            font-family: 'Manrope', Arial, sans-serif;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        ">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="font-size: 24px;">💧</div>
+                <div>
+                    <div style="font-weight: 700; color: #2c3e50; font-size: 15px;">${adTitle}</div>
+                    <div style="font-size: 13px; color: #57606a; margin-top: 2px;">${adBody}</div>
+                </div>
+            </div>
+            
+            <a href="${AFFILIATE_LINK}" target="_blank" style="
+                background: #FF9900; 
+                color: #232f3e; 
+                text-decoration: none; 
+                padding: 10px 20px; 
+                border-radius: 20px; 
+                font-weight: bold; 
+                font-size: 13px;
+                white-space: nowrap;
+                transition: transform 0.2s;
+            " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                ${buttonText} &rarr;
+            </a>
+        </div>
+    `;
+    container.insertAdjacentHTML('beforeend', adHTML);
+}
+
 // --- MAIN LOGIC ---
 
 async function init() {
+    // 1. Redirect Check
     if (!window.location.href.includes('/photos')) {
         const feedback = document.createElement('div');
         feedback.className = 'jan-loading';
@@ -119,7 +194,7 @@ async function init() {
 
     isRunning = true;
     
-    // Pick ONE message for the entire session
+    // Pick ONE message for this session
     const randomMessage = LOADING_MESSAGES[Math.floor(Math.random() * LOADING_MESSAGES.length)];
 
     const feedback = document.createElement('div');
@@ -142,12 +217,9 @@ async function init() {
 
     let page = 1;
     let keepFetching = true;
-    
-    // BATCH CONFIGURATION
     const BATCH_SIZE = 3; 
     
     while (keepFetching) {
-        // Display the selected message continuously + progress
         feedback.innerText = `Scanning Page ${page}... (${allPhotosCache.length} photos)\n${randomMessage}`;
 
         const promises = [];
@@ -248,10 +320,16 @@ function setupUI() {
 
 function renderGallery() {
     const target = document.querySelector('div[class*="styles-module__photosGallery"]') || document.body;
+    target.innerHTML = ''; // Clear Everything
+
+    // 1. INJECT AD (Top of results)
+    renderAffiliateAd(target);
     
+    // 2. FILTER & SORT
     let filtered = allPhotosCache.filter(p => p.month === currentMonth);
     filtered.sort((a, b) => currentSort === 'desc' ? b.timestamp - a.timestamp : a.timestamp - b.timestamp);
     
+    // 3. GROUP
     const byYear = filtered.reduce((acc, p) => {
         if (!acc[p.year]) acc[p.year] = [];
         acc[p.year].push(p);
@@ -261,6 +339,7 @@ function renderGallery() {
     const years = Object.keys(byYear).sort((a, b) => currentSort === 'desc' ? b - a : a - b);
     const monthName = MONTHS[currentMonth];
 
+    // 4. BUILD GRID HTML
     let html = `<h2 style="padding:0 0 20px; color:#333; font-family:sans-serif;">❄️ ${monthName} Conditions (${filtered.length} photos)</h2>`;
     
     if (filtered.length === 0) {
@@ -280,6 +359,10 @@ function renderGallery() {
         });
     }
 
+    // 5. APPEND GRID AFTER AD
+    target.insertAdjacentHTML('beforeend', html);
+
+    // 6. SETUP MODAL
     if (!document.getElementById('janModal')) {
         const modalHTML = `
             <div class="jan-modal-overlay" id="janModal">
@@ -294,8 +377,6 @@ function renderGallery() {
     } else {
         setupModal(filtered);
     }
-
-    target.innerHTML = html;
 
     document.querySelectorAll('.jan-thumb-card').forEach(card => {
         card.addEventListener('click', () => window.openJanModal(parseInt(card.dataset.idx)));
