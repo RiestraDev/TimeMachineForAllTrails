@@ -4,6 +4,22 @@ const AFFILIATE_LINK = "https://www.amazon.com/Katadyn-Membrane-Endurance-Campin
 
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
+// Seasonal Icons (0 = Jan, 11 = Dec)
+const SEASON_ICONS = [
+    "❄️", // Jan
+    "❄️", // Feb
+    "🌱", // Mar
+    "🌱", // Apr
+    "🌸", // May
+    "☀️", // Jun
+    "☀️", // Jul
+    "☀️", // Aug
+    "🍂", // Sep
+    "🍂", // Oct
+    "🍂", // Nov
+    "❄️"  // Dec
+];
+
 // Whimsical messages
 const LOADING_MESSAGES = [
     "🐢 Pacing ourselves so Big Brother doesn't get mad...",
@@ -124,6 +140,7 @@ function buildProxyUrl(id, hash, size) {
 // --- MONETIZATION COMPONENT ---
 function renderAffiliateAd(container) {
     const monthName = MONTHS[currentMonth];
+    const icon = SEASON_ICONS[currentMonth]; // Can match ad icon to season next, but keeping generic for now
     
     // Copy for Katadyn Water Filter
     let adTitle = "Stay Hydrated on the Trail";
@@ -337,9 +354,11 @@ function renderGallery() {
 
     const years = Object.keys(byYear).sort((a, b) => currentSort === 'desc' ? b - a : a - b);
     const monthName = MONTHS[currentMonth];
+    
+    const seasonIcon = SEASON_ICONS[currentMonth];
 
     // 4. BUILD GRID HTML
-    let html = `<h2 style="padding:0 0 20px; color:#333; font-family:sans-serif;">❄️ ${monthName} Conditions (${filtered.length} photos)</h2>`;
+    let html = `<h2 style="padding:0 0 20px; color:#333; font-family:sans-serif;">${seasonIcon} ${monthName} Conditions (${filtered.length} photos)</h2>`;
     
     if (filtered.length === 0) {
         html += `<div style="text-align:center; padding:40px; color:#666;">No photos found for ${monthName}.</div>`;
