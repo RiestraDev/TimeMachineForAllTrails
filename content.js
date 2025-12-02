@@ -155,39 +155,51 @@ function renderAffiliateAd(container) {
 
     const adHTML = `
         <div style="
-            margin: 20px 0; 
+            margin: 0px 0; 
             padding: 16px; 
             background: #f8f9fa; 
             border: 1px solid #e9ecef; 
             border-left: 4px solid #4183c4; 
             border-radius: 6px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between;
             font-family: 'Manrope', Arial, sans-serif;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         ">
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <div style="font-size: 24px;">💧</div>
-                <div>
-                    <div style="font-weight: 700; color: #2c3e50; font-size: 15px;">${adTitle}</div>
-                    <div style="font-size: 13px; color: #57606a; margin-top: 2px;">${adBody}</div>
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div style="font-size: 24px;">💧</div>
+                    <div>
+                        <div style="font-weight: 700; color: #2c3e50; font-size: 15px;">${adTitle}</div>
+                        <div style="font-size: 13px; color: #57606a; margin-top: 2px;">${adBody}</div>
+                    </div>
                 </div>
+                
+                <a href="${AFFILIATE_LINK}" target="_blank" style="
+                    background: #FF9900; 
+                    color: #232f3e; 
+                    text-decoration: none; 
+                    padding: 10px 20px; 
+                    border-radius: 20px; 
+                    font-weight: bold; 
+                    font-size: 13px;
+                    white-space: nowrap;
+                    transition: transform 0.2s;
+                " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    ${buttonText} &rarr;
+                </a>
             </div>
             
-            <a href="${AFFILIATE_LINK}" target="_blank" style="
-                background: #FF9900; 
-                color: #232f3e; 
-                text-decoration: none; 
-                padding: 10px 20px; 
-                border-radius: 20px; 
-                font-weight: bold; 
-                font-size: 13px;
-                white-space: nowrap;
-                transition: transform 0.2s;
-            " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                ${buttonText} &rarr;
-            </a>
+            <!-- GAS MONEY FOOTER -->
+            <div style="
+                margin-top: 12px; 
+                padding-top: 8px; 
+                border-top: 1px dashed #dce2e8; 
+                font-size: 11px; 
+                color: #8fa1b3; 
+                text-align: right;
+                font-style: italic;
+            ">
+                Purchases through this link help me afford gas for the next adventure. 🚙💨
+            </div>
         </div>
     `;
     container.insertAdjacentHTML('beforeend', adHTML);
@@ -358,7 +370,7 @@ function renderGallery() {
     const seasonIcon = SEASON_ICONS[currentMonth];
 
     // 4. BUILD GRID HTML
-    let html = `<h2 style="padding:0 0 20px; color:#333; font-family:sans-serif;">${seasonIcon} ${monthName} Conditions (${filtered.length} photos)</h2>`;
+    let html = `<h2 style="padding:20px 0 0 0px; color:#333; font-family:sans-serif;">${seasonIcon} ${monthName} Conditions (${filtered.length} photos)</h2>`;
     
     if (filtered.length === 0) {
         html += `<div style="text-align:center; padding:40px; color:#666;">No photos found for ${monthName}.</div>`;
