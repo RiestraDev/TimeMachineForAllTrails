@@ -1,20 +1,124 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <style>
-        body { width: 200px; padding: 15px; font-family: sans-serif; text-align: center; }
-        button {
-            width: 100%; padding: 10px; background: #428bca; color: white;
-            border: none; border-radius: 5px; cursor: pointer; font-weight: bold;
+        :root {
+            --primary: #428a13;
+            --primary-hover: #36700f;
+            --text: #2b3e50;
+            --bg: #ffffff;
+            --error: #e74c3c;
         }
-        button:hover { background: #3071a9; }
-        .note { font-size: 12px; color: #666; margin-top: 10px; }
+        body {
+            width: 300px;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+        }
+        header {
+            background-color: #f9f9f9;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo {
+            width: 32px; 
+            height: 32px;
+            border-radius: 6px;
+        }
+        h1 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .container {
+            padding: 20px;
+            text-align: center;
+        }
+        p.desc {
+            font-size: 13px;
+            color: #666;
+            margin: 0 0 20px 0;
+            line-height: 1.4;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 2px 5px rgba(66, 138, 19, 0.2);
+        }
+        button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(66, 138, 19, 0.3);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .status {
+            margin-top: 15px;
+            font-size: 12px;
+            color: #888;
+            min-height: 1.4em;
+        }
+        .footer {
+            margin-top: 25px;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            font-size: 10px;
+            color: #aaa;
+            display: flex;
+            justify-content: space-between;
+        }
+        a { color: #aaa; text-decoration: none; }
+        a:hover { color: var(--primary); }
     </style>
 </head>
 <body>
-    <h3>Time Machine<br>AllTrails</h3>
-    <button id="startBtn">Load Photos</button>
-    <p class="note">Navigate to a trail page first!</p>
+    <header>
+        <!-- Assuming you have icons/icon48.png from the previous step -->
+        <img src="icons/icon48.png" alt="Icon" class="logo">
+        <h1>Time Machine</h1>
+    </header>
+
+    <div class="container">
+        <p class="desc">Filter photos by month & year to see true trail conditions.</p>
+        
+        <button id="startBtn">
+            <span>🚀</span> Load Photos
+        </button>
+
+        <p class="status" id="statusMsg">Ready to travel.</p>
+
+        <div class="footer">
+            <span>v1.0</span>
+            <a href="https://github.com/RiestraDev/TimeMachineForAllTrails" target="_blank">GitHub</a>
+        </div>
+    </div>
+
     <script src="popup.js"></script>
 </body>
 </html>
