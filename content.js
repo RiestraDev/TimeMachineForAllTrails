@@ -140,7 +140,7 @@ function buildProxyUrl(id, hash, size) {
 // --- MONETIZATION COMPONENT ---
 function renderAffiliateAd(container) {
     const monthName = MONTHS[currentMonth];
-    const icon = SEASON_ICONS[currentMonth]; // Can match ad icon to season next, but keeping generic for now
+    const icon = SEASON_ICONS[currentMonth]; 
     
     // Copy for Katadyn Water Filter
     let adTitle = "Stay Hydrated on the Trail";
@@ -313,6 +313,12 @@ async function init() {
 }
 
 function setupUI() {
+    // 1. Footer Removal Logic (Zombie UI Killer)
+    const footerContainer = document.querySelector('div[class*="styles-module__showMoreContainer"]');
+    if (footerContainer) {
+        footerContainer.remove();
+    }
+
     const originalSort = document.querySelector('[data-testid="sort"]');
     if (originalSort) {
         const container = originalSort.closest('div[class*="styles-module__container"]');
@@ -334,7 +340,16 @@ function setupUI() {
             sortSel.innerHTML = `<option value="desc">Newest First</option><option value="asc">Oldest First</option>`;
             sortSel.onchange = (e) => { currentSort = e.target.value; renderGallery(); };
 
-            controls.append(monthSel, sortSel);
+            // Reset Button
+            const resetBtn = document.createElement('button');
+            resetBtn.innerText = "Reset View";
+            resetBtn.className = 'jan-custom-select';
+            resetBtn.style.marginLeft = "10px";
+            resetBtn.style.backgroundColor = "#f1f1f1";
+            resetBtn.style.color = "#555";
+            resetBtn.onclick = () => window.location.reload();
+
+            controls.append(monthSel, sortSel, resetBtn);
             container.appendChild(controls);
         }
     }
