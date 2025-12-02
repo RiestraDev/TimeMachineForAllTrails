@@ -2,9 +2,9 @@
   "manifest_version": 3,
   "name": "Time Machine for AllTrails",
   "short_name": "Trail Time Machine",
-  "version": "1.0",
-  "description": "Filter trail photos by month and year to plan seasonal hikes and overlanding trips.",
-  "permissions": ["activeTab", "scripting"],
+  "version": "1.0.1", 
+  "description": "Filter trail photos by month and year to plan safer seasonal hikes and overlanding trips.",
+  "permissions": ["activeTab"],
   "host_permissions": ["https://www.alltrails.com/*"],
   "action": {
     "default_popup": "popup.html",

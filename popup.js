@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         btn.addEventListener('click', () => {
             // UI Feedback
             btn.innerHTML = "<span>⏳</span> Working...";
-            status.textContent = "Injecting script...";
+            status.textContent = "Starting Time Machine...";
             
             // Send Message
             chrome.tabs.sendMessage(tab.id, {action: "start_scrape"}, (response) => {
