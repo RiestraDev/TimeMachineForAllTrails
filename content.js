@@ -9,7 +9,6 @@ const LOADING_MESSAGES = [
     "🐢 Pacing ourselves so Big Brother doesn't get mad...",
     "🕵️‍♂️ Sneaking past the rate limiters...",
     "🧊 Staying frosty to avoid the ban hammer...",
-    "🤖 acting_totally_human.exe...",
     "⏳ This is as fast as we can go without angering the server gods...",
     "🚙 shifting_into_4lo.exe..." 
 ];
