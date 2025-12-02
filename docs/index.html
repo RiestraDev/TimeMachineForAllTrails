@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Machine for AllTrails</title>
+    <style>
+        :root { --primary: #2c3e50; --accent: #27ae60; --bg: #f4f7f6; }
+        body { font-family: -apple-system, system-ui, sans-serif; line-height: 1.6; margin: 0; padding: 0; background: var(--bg); color: #333; }
+        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        header { text-align: center; padding-bottom: 40px; }
+        .icon { width: 128px; height: 128px; border-radius: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        h1 { margin: 20px 0 10px; color: var(--primary); }
+        .hero-btn { display: inline-block; background: var(--accent); color: white; padding: 15px 30px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 18px; margin-top: 20px; transition: transform 0.2s; }
+        .hero-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4); }
+        .screenshot { width: 100%; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin: 40px 0; border: 1px solid #ddd; }
+        .features { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left; }
+        .feature-card { background: white; padding: 20px; border-radius: 8px; border: 1px solid #eee; }
+        footer { margin-top: 60px; font-size: 12px; color: #777; text-align: center; border-top: 1px solid #ddd; padding-top: 20px; }
+        a { color: var(--accent); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <!-- Make sure you copy your icon to docs/icon.png -->
+        <img src="../icons/icon128.png" alt="App Icon" class="icon">
+        <h1>Time Machine for AllTrails</h1>
+        <p>Plan your seasonal adventures by filtering trail photos by Month and Year.</p>
+        
+        <!-- Link this to your eventual Chrome Store URL later -->
+        <a href="#" class="hero-btn">Download for Chrome</a>
+    </header>
+
+    <!-- Take a screenshot of your extension in action and save it as docs/screenshot.png -->
+    <img src="screenshot.png" alt="Extension Preview" class="screenshot">
+
+    <div class="features">
+        <div class="feature-card">
+            <h3>📅 Filter by Month</h3>
+            <p>See exactly what conditions look like in January vs. July. Don't get caught in snow without gear.</p>
+        </div>
+        <div class="feature-card">
+            <h3>⚡ Instant Search</h3>
+            <p>Scrapes and organizes thousands of photos in seconds using smart caching.</p>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>Disclaimer:</strong> This extension is an independent project and is not affiliated with AllTrails.</p>
+        <p>As an Amazon Associate I earn from qualifying purchases found through links in this tool.</p>
+        <p><a href="privacy.html">Privacy Policy</a></p>
+    </footer>
+</div>
+
+</body>
+</html>
