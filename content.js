@@ -198,7 +198,7 @@ function renderAffiliateAd(container) {
                 text-align: right;
                 font-style: italic;
             ">
-                Purchases through this link help me afford gas for the next adventure. 🚙💨
+                As an Amazon Associate I earn from qualifying purchases (which helps buy gas for the next adventure 🚙💨).
             </div>
         </div>
     `;
